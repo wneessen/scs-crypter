@@ -40,7 +40,7 @@ func TestEncryptor_New(t *testing.T) {
 			if err != nil {
 				t.Fatalf("failed to create encryptor: %s", err)
 			}
-			if _, err = encrypter.Encode(time.Now(), map[string]interface{}{}); err != nil {
+			if _, err = encrypter.Encode(time.Now(), map[string]any{}); err != nil {
 				t.Errorf("failed to encode data: %s", err)
 			}
 		})
@@ -50,7 +50,7 @@ func TestEncryptor_New(t *testing.T) {
 		if encryptor.cipher != nil {
 			t.Fatalf("expected cipher to be nil")
 		}
-		_, err := encryptor.Encode(time.Now(), map[string]interface{}{})
+		_, err := encryptor.Encode(time.Now(), map[string]any{})
 		if err == nil {
 			t.Fatalf("encryptor with nil cipher should fail")
 		}
@@ -88,7 +88,7 @@ func TestNewXChaCha20Poly1305(t *testing.T) {
 }
 
 func TestEncrypter_Encode(t *testing.T) {
-	data := map[string]interface{}{
+	data := map[string]any{
 		"string": "test",
 		"int":    42,
 		"bool":   true,
@@ -137,7 +137,7 @@ func TestEncrypter_Encode(t *testing.T) {
 			}
 		})
 		t.Run(tt.name+" fails with unregistered gob type", func(t *testing.T) {
-			unregistered := map[string]interface{}{
+			unregistered := map[string]any{
 				"unregistered": map[string]string{"foo": "bar"},
 			}
 			encrypter, err := tt.newFunc(tt.key)
@@ -153,7 +153,7 @@ func TestEncrypter_Encode(t *testing.T) {
 }
 
 func TestEncrypter_Decode(t *testing.T) {
-	data := map[string]interface{}{
+	data := map[string]any{
 		"string": "test",
 		"int":    42,
 		"bool":   true,
