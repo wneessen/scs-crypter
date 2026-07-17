@@ -144,10 +144,10 @@ func NewXChaCha20Poly1305(key []byte) (Encrypter, error) {
 //
 // The function first serializes the input data using gob encoding, then encrypts it using
 // the underlying iocrypter encryption mechanism.
-func (e Encrypter) Encode(deadline time.Time, values map[string]interface{}) ([]byte, error) {
+func (e Encrypter) Encode(deadline time.Time, values map[string]any) ([]byte, error) {
 	aux := &struct {
 		Deadline time.Time
-		Values   map[string]interface{}
+		Values   map[string]any
 	}{
 		Deadline: deadline,
 		Values:   values,
@@ -173,10 +173,10 @@ func (e Encrypter) Encode(deadline time.Time, values map[string]interface{}) ([]
 //
 // The function decrypts the given ciphertext using iocrypter and deserializes it back
 // into its structured session representation.
-func (e Encrypter) Decode(ciphertext []byte) (time.Time, map[string]interface{}, error) {
+func (e Encrypter) Decode(ciphertext []byte) (time.Time, map[string]any, error) {
 	aux := &struct {
 		Deadline time.Time
-		Values   map[string]interface{}
+		Values   map[string]any
 	}{}
 
 	data, err := e.decrypt(ciphertext)
